@@ -1,0 +1,5 @@
+app:
+  name: "Ticketing Catalog - Test Mode"
+  environment: "test"
+server:
+  port: 8081

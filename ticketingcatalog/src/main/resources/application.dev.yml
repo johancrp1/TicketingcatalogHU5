@@ -1,0 +1,5 @@
+app:
+  name: "Ticketing Catalog - Dev Mode"
+  environment: "development"
+server:
+  port: 8080

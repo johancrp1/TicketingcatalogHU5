@@ -49,7 +49,34 @@
 			<artifactId>spring-boot-starter-test</artifactId>
 			<scope>test</scope>
 		</dependency>
-	</dependencies>
+
+        <!-- ==========================
+     OpenAPI / Swagger UI
+     ==========================
+     Esta dependencia permite generar documentación automática
+     de tu API REST en Spring Boot 3.x.
+
+     - Muestra todos los endpoints disponibles.
+     - Permite probar las requests directamente desde el navegador.
+     - Integra ejemplos de request/response.
+     - Se accede a Swagger UI en:
+       http://localhost:8080/swagger-ui/index.html
+-->
+        <dependency>
+            <groupId>org.springdoc</groupId>
+            <artifactId>springdoc-openapi-starter-webmvc-ui</artifactId>
+            <version>2.6.0</version>
+        </dependency>
+
+
+        <!-- OpenAPI / Swagger UI es solo una dependencia transitoria y que no se usa directamente.-->
+        <dependency>
+            <groupId>org.apache.commons</groupId>
+            <artifactId>commons-lang3</artifactId>
+            <version>3.13.0</version> <!-- o la última estable -->
+        </dependency>
+
+    </dependencies>
 
 	<build>
 		<plugins>
