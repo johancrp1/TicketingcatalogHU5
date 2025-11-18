@@ -8,7 +8,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 public class TicketingCatalogApplication {
 
     public static void main(String[] args) {
-        // Arranca la aplicación Spring Boot
+        // Arranca la aplicación Spring Boot.
         SpringApplication.run(TicketingCatalogApplication.class, args);
     }
 }
