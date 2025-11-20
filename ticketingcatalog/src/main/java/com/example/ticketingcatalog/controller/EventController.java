@@ -3,6 +3,7 @@ package com.example.ticketingcatalog.controller;
 import com.example.ticketingcatalog.dto.EventDTO;
 import com.example.ticketingcatalog.service.interfaces.IEventService;
 import jakarta.validation.Valid;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -34,14 +35,17 @@ public class EventController {
 
     // POST /events -> crea un nuevo evento
     @PostMapping
-    public ResponseEntity<EventDTO> create(@Valid @RequestBody EventDTO event) {
-        return ResponseEntity.status(201).body(eventService.create(event));
+    public ResponseEntity<EventDTO> create(@Valid @RequestBody EventDTO dto) {
+        return ResponseEntity.status(HttpStatus.CREATED).body(eventService.create(dto));
     }
+
 
     // PUT /events/{id} -> actualiza un evento existente
     @PutMapping("/{id}")
-    public ResponseEntity<EventDTO> update(@PathVariable Long id, @Valid @RequestBody EventDTO event) {
-        return eventService.update(id, event)
+    public ResponseEntity<EventDTO> update(
+            @PathVariable Long id,
+            @Valid @RequestBody EventDTO dto) {
+        return eventService.update(id, dto)
                 .map(ResponseEntity::ok)
                 .orElse(ResponseEntity.notFound().build());
     }

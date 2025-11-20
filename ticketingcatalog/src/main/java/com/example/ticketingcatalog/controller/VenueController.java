@@ -3,6 +3,7 @@ package com.example.ticketingcatalog.controller;
 import com.example.ticketingcatalog.dto.VenueDTO;
 import com.example.ticketingcatalog.service.interfaces.IVenueService;
 import jakarta.validation.Valid;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -34,8 +35,8 @@ public class VenueController {
 
     // POST /venues -> crea un nuevo venue
     @PostMapping
-    public ResponseEntity<VenueDTO> create(@Valid @RequestBody VenueDTO venue) {
-        return ResponseEntity.status(201).body(venueService.create(venue));
+    public ResponseEntity<VenueDTO> create(@Valid @RequestBody VenueDTO dto) {
+        return ResponseEntity.status(HttpStatus.CREATED).body(venueService.create(dto));
     }
 
     // PUT /venues/{id} -> actualiza un venue existente
