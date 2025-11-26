@@ -1,5 +1,27 @@
-app:
-  name: "Ticketing Catalog - Dev Mode"
-  environment: "development"
-server:
-  port: 8080
+# ---------------------------------
+# INFO DEL PROYECTO
+# ---------------------------------
+app.name=Ticketing Catalog - Dev Mode
+app.environment=development
+
+server.port=8080
+  
+  # ---------------------------------
+  # H2 DATABASE
+  # ---------------------------------
+spring.datasource.url=jdbc:h2:mem:ticketingdb
+spring.datasource.driverClassName=org.h2.Driver
+spring.datasource.username=sa
+spring.datasource.password=
+  
+  # H2 Console (solo para DEV)
+spring.h2.console.enabled=true
+spring.h2.console.path=/h2-console
+  
+  # ---------------------------------
+  # JPA / HIBERNATE
+  # ---------------------------------
+spring.jpa.hibernate.ddl-auto=update
+spring.jpa.show-sql=true
+spring.jpa.database-platform=org.hibernate.dialect.H2Dialect
+spring.jpa.properties.hibernate.jdbc.lob.non_contextual_creation=true
