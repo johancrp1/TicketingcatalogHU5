@@ -30,4 +30,3 @@ public class EventModel {
     public VenueModel getVenue() { return venue; }
     public void setVenue(VenueModel venue) { this.venue = venue; }
 }
-

@@ -1,4 +1,4 @@
-package com.example.ticketingcatalog.infrastructure.controller;
+package com.example.ticketingcatalog.infrastructure.adapters.in.web;
 
 import com.example.ticketingcatalog.application.dto.VenueDTO;
 import com.example.ticketingcatalog.application.usecase.VenueUseCase;
@@ -11,36 +11,36 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/venues")
-public class VenueController {
+public class VenueRestAdapter {
 
     @Autowired
     private VenueUseCase venueUseCase;
 
     @GetMapping
     public List<VenueDTO> getAll() {
-        return venueUseCase.getAll();
+        return venueUseCase.getAllDTO();
     }
 
     @GetMapping("/{id}")
     public VenueDTO getById(@PathVariable Long id) {
-        return venueUseCase.getById(id)
+        return venueUseCase.getByIdDTO(id)
                 .orElseThrow(() -> new NotFoundException("Venue no encontrado con id " + id));
     }
 
     @PostMapping
     public VenueDTO create(@Valid @RequestBody VenueDTO dto) {
-        return venueUseCase.create(dto);
+        return venueUseCase.createDTO(dto);
     }
 
     @PutMapping("/{id}")
     public VenueDTO update(@PathVariable Long id, @Valid @RequestBody VenueDTO dto) {
-        return venueUseCase.update(id, dto)
+        return venueUseCase.updateDTO(id, dto)
                 .orElseThrow(() -> new NotFoundException("No se pudo actualizar. Venue no encontrado con id " + id));
     }
 
     @DeleteMapping("/{id}")
     public void delete(@PathVariable Long id) {
-        boolean deleted = venueUseCase.delete(id);
+        boolean deleted = venueUseCase.deleteVenue(id);
         if (!deleted) {
             throw new NotFoundException("No se pudo eliminar. Venue no encontrado con id " + id);
         }

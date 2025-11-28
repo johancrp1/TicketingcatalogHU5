@@ -6,21 +6,19 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-// Lombok genera automáticamente getters, setters, constructores, toString, etc.
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
 public class EventDTO {
 
-    private Long id; // ID único del evento
+    private Long id;
 
-    @NotBlank(message = "El nombre del evento no puede estar vacío")
+    @NotBlank(message = "El nombre del evento no pueede estar vacío")
     @Size(min = 3, max = 50, message = "El nombre debe tener entre 3 y 50 caracteres")
-    private String name; // Nombre del evento
+    private String name;
 
     @NotBlank(message = "La fecha es obligatoria")
-    private String date; // Fecha del evento (puede ser String por ahora)
+    private String date;
 
-    private String venueId; // ID del venue asociado
-
+    private String venueId;
 }

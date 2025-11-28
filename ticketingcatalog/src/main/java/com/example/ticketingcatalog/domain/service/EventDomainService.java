@@ -1,10 +1,8 @@
 package com.example.ticketingcatalog.domain.service;
 
 import com.example.ticketingcatalog.domain.model.EventModel;
-import com.example.ticketingcatalog.domain.repository.EventRepository;
-import com.example.ticketingcatalog.domain.model.VenueModel;
+import com.example.ticketingcatalog.domain.ports.out.EventRepositoryPort;
 import com.example.ticketingcatalog.infrastructure.exception.DuplicateResourceException;
-import com.example.ticketingcatalog.infrastructure.exception.NotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -15,7 +13,7 @@ import java.util.Optional;
 public class EventDomainService implements IEventService {
 
     @Autowired
-    private EventRepository eventRepository;
+    private EventRepositoryPort eventRepository;
 
     @Override
     public List<EventModel> getAll() {

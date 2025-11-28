@@ -1,10 +1,11 @@
-package com.example.ticketingcatalog.infrastructure.repository;
+package com.example.ticketingcatalog.infrastructure.adapters.out.jpa;
 
 import com.example.ticketingcatalog.domain.model.EventModel;
 import com.example.ticketingcatalog.domain.model.VenueModel;
-import com.example.ticketingcatalog.domain.repository.EventRepository;
-import com.example.ticketingcatalog.infrastructure.entity.EventEntity;
-import com.example.ticketingcatalog.infrastructure.entity.VenueEntity;
+import com.example.ticketingcatalog.domain.ports.out.EventRepositoryPort;
+import com.example.ticketingcatalog.infrastructure.adapters.out.jpa.entity.EventEntity;
+import com.example.ticketingcatalog.infrastructure.adapters.out.jpa.repository.IEventRepository;
+import com.example.ticketingcatalog.infrastructure.adapters.out.jpa.repository.IVenueRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
@@ -13,7 +14,7 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Repository
-public class EventJpaRepository implements EventRepository {
+public class EventJpaAdapter implements EventRepositoryPort {
 
     @Autowired
     private IEventRepository eventJpa;

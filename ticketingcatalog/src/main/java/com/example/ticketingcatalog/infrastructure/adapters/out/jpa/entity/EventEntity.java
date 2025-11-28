@@ -1,4 +1,4 @@
-package com.example.ticketingcatalog.infrastructure.entity;
+package com.example.ticketingcatalog.infrastructure.adapters.out.jpa.entity;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Future;
@@ -31,9 +31,6 @@ public class EventEntity {
     @JoinColumn(name = "venue_id")
     private VenueEntity venue;
 
-
-    // Getters y setters
-
     public Long getId() { return id; }
     public void setId(Long id) { this.id = id; }
 
@@ -45,6 +42,4 @@ public class EventEntity {
 
     public VenueEntity getVenue() { return venue; }
     public void setVenue(VenueEntity venue) { this.venue = venue; }
-
-
 }

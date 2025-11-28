@@ -1,6 +1,6 @@
-package com.example.ticketingcatalog.infrastructure.repository;
+package com.example.ticketingcatalog.infrastructure.adapters.out.jpa.repository;
 
-import com.example.ticketingcatalog.infrastructure.entity.VenueEntity;
+import com.example.ticketingcatalog.infrastructure.adapters.out.jpa.entity.VenueEntity;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

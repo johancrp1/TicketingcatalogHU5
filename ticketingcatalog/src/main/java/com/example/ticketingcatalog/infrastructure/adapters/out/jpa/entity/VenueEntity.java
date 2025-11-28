@@ -1,4 +1,4 @@
-package com.example.ticketingcatalog.infrastructure.entity;
+package com.example.ticketingcatalog.infrastructure.adapters.out.jpa.entity;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
@@ -20,8 +20,6 @@ public class VenueEntity {
     @NotBlank(message = "La ciudad no puede estar vacía")
     @Size(min = 2, max = 40, message = "La ciudad debe tener entre 2 y 40 caracteres")
     private String city;
-
-    // Getters y setters
 
     public Long getId() { return id; }
     public void setId(Long id) { this.id = id; }

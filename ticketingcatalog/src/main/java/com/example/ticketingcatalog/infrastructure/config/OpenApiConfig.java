@@ -14,7 +14,7 @@ public class OpenApiConfig {
         return new OpenAPI()
                 .info(new Info()
                         .title("Ticketing Catalog API")
-                        .description("API REST para gestionar Eventos y Venues en memoria")
+                        .description("API REST para gestionar Eventos y Venues")
                         .version("1.0.0"))
                 .externalDocs(new ExternalDocumentation()
                         .description("Repositorio del proyecto")

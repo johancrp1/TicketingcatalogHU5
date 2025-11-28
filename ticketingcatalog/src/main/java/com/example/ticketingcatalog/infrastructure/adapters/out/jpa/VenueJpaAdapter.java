@@ -1,8 +1,9 @@
-package com.example.ticketingcatalog.infrastructure.repository;
+package com.example.ticketingcatalog.infrastructure.adapters.out.jpa;
 
 import com.example.ticketingcatalog.domain.model.VenueModel;
-import com.example.ticketingcatalog.domain.repository.VenueRepository;
-import com.example.ticketingcatalog.infrastructure.entity.VenueEntity;
+import com.example.ticketingcatalog.domain.ports.out.VenueRepositoryPort;
+import com.example.ticketingcatalog.infrastructure.adapters.out.jpa.entity.VenueEntity;
+import com.example.ticketingcatalog.infrastructure.adapters.out.jpa.repository.IVenueRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
@@ -11,7 +12,7 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Repository
-public class VenueJpaRepository implements VenueRepository {
+public class VenueJpaAdapter implements VenueRepositoryPort {
 
     @Autowired
     private IVenueRepository venueJpa;

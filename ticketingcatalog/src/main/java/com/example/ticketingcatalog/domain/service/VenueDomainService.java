@@ -1,9 +1,8 @@
 package com.example.ticketingcatalog.domain.service;
 
 import com.example.ticketingcatalog.domain.model.VenueModel;
-import com.example.ticketingcatalog.domain.repository.VenueRepository;
+import com.example.ticketingcatalog.domain.ports.out.VenueRepositoryPort;
 import com.example.ticketingcatalog.infrastructure.exception.DuplicateResourceException;
-import com.example.ticketingcatalog.infrastructure.exception.NotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -14,7 +13,7 @@ import java.util.Optional;
 public class VenueDomainService implements IVenueService {
 
     @Autowired
-    private VenueRepository venueRepository;
+    private VenueRepositoryPort venueRepository;
 
     @Override
     public List<VenueModel> getAll() {
