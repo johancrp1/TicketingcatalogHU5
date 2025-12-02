@@ -1,7 +1,9 @@
 package com.example.ticketingcatalog.infrastructure.adapters.out.jpa;
 
+import com.example.ticketingcatalog.domain.model.EventModel;
 import com.example.ticketingcatalog.domain.model.VenueModel;
 import com.example.ticketingcatalog.domain.ports.out.VenueRepositoryPort;
+import com.example.ticketingcatalog.infrastructure.adapters.out.jpa.entity.EventEntity;
 import com.example.ticketingcatalog.infrastructure.adapters.out.jpa.entity.VenueEntity;
 import com.example.ticketingcatalog.infrastructure.adapters.out.jpa.repository.IVenueRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,14 +27,28 @@ public class VenueJpaAdapter implements VenueRepositoryPort {
     @Override
     public Optional<VenueModel> findById(Long id) {
         return venueJpa.findById(id)
-                .map(e -> new VenueModel(e.getId(), e.getName(), e.getCity()));
+                .map(v -> {
+                    VenueModel model = new VenueModel(v.getId(), v.getName(), v.getCity());
+                    // mapear eventos si existen
+                    List<EventModel> events = v.getEvents()
+                            .stream()
+                            .map(e -> new EventModel(
+                                    e.getId(),
+                                    e.getName(),
+                                    e.getDate(),
+                                    null // evitamos bucle infinito
+                            ))
+                            .collect(Collectors.toList());
+                    // si quieres, puedes agregar un setter de eventos en VenueModel
+                    return model;
+                });
     }
 
     @Override
     public List<VenueModel> findAll() {
         return venueJpa.findAll()
                 .stream()
-                .map(e -> new VenueModel(e.getId(), e.getName(), e.getCity()))
+                .map(v -> new VenueModel(v.getId(), v.getName(), v.getCity()))
                 .collect(Collectors.toList());
     }
 

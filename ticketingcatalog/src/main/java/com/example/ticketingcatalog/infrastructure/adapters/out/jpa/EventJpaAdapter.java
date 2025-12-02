@@ -4,6 +4,7 @@ import com.example.ticketingcatalog.domain.model.EventModel;
 import com.example.ticketingcatalog.domain.model.VenueModel;
 import com.example.ticketingcatalog.domain.ports.out.EventRepositoryPort;
 import com.example.ticketingcatalog.infrastructure.adapters.out.jpa.entity.EventEntity;
+import com.example.ticketingcatalog.infrastructure.adapters.out.jpa.entity.VenueEntity;
 import com.example.ticketingcatalog.infrastructure.adapters.out.jpa.repository.IEventRepository;
 import com.example.ticketingcatalog.infrastructure.adapters.out.jpa.repository.IVenueRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -67,7 +68,11 @@ public class EventJpaAdapter implements EventRepositoryPort {
         entity.setDate(model.getDate());
 
         if (model.getVenue() != null) {
-            entity.setVenue(venueJpa.findById(model.getVenue().getId()).orElse(null));
+            VenueEntity venueEntity = venueJpa.findById(model.getVenue().getId()).orElse(null);
+            entity.setVenue(venueEntity);
+            if (venueEntity != null && !venueEntity.getEvents().contains(entity)) {
+                venueEntity.getEvents().add(entity); // mantener consistencia bidireccional
+            }
         }
 
         EventEntity saved = eventJpa.save(entity);

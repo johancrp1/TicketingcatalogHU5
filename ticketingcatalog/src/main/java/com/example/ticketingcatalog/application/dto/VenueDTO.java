@@ -6,6 +6,8 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.List;
+
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
@@ -13,11 +15,13 @@ public class VenueDTO {
 
     private Long id;
 
-    @NotBlank(message = "El nombre del venue no pueede estar vacío")
+    @NotBlank(message = "El nombre del venue no puede estar vacío")
     @Size(min = 3, max = 60, message = "El nombre debe tener entre 3 y 60 caracteres")
     private String name;
 
     @NotBlank(message = "La ciudad es obligatoria")
     @Size(min = 2, max = 40, message = "La ciudad debe tener entre 2 y 40 caracteres")
     private String location;
+
+    private List<EventDTO> events;
 }

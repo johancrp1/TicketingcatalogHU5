@@ -4,7 +4,6 @@ import jakarta.persistence.*;
 import jakarta.validation.constraints.Future;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
-
 import java.time.LocalDate;
 
 @Entity
@@ -27,10 +26,12 @@ public class EventEntity {
     @Column(nullable = false)
     private LocalDate date;
 
-    @ManyToOne
+    // RELACIÓN MANY TO ONE: un Evento pertenece a un solo Venue
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "venue_id")
     private VenueEntity venue;
 
+    // Getters y setters
     public Long getId() { return id; }
     public void setId(Long id) { this.id = id; }
 
