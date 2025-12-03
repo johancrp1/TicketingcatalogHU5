@@ -12,7 +12,7 @@ import java.io.IOException;
 import java.util.UUID;
 
 @Component
-public class TraceIdFilter extends OncePerRequestFilter {
+public class ExceptionTraceIdFilter extends OncePerRequestFilter {
 
     public static final String TRACE_ID = "traceId";
 
