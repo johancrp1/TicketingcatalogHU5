@@ -3,7 +3,6 @@ package com.example.ticketingcatalog.infrastructure.adapters.out.jpa;
 import com.example.ticketingcatalog.domain.model.EventModel;
 import com.example.ticketingcatalog.domain.model.VenueModel;
 import com.example.ticketingcatalog.domain.ports.out.VenueRepositoryPort;
-import com.example.ticketingcatalog.infrastructure.adapters.out.jpa.entity.EventEntity;
 import com.example.ticketingcatalog.infrastructure.adapters.out.jpa.entity.VenueEntity;
 import com.example.ticketingcatalog.infrastructure.adapters.out.jpa.repository.IVenueRepository;
 import org.springframework.beans.factory.annotation.Autowired;

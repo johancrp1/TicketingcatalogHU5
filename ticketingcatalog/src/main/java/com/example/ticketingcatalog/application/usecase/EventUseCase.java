@@ -5,6 +5,8 @@ import com.example.ticketingcatalog.application.mapper.EventMapper;
 import com.example.ticketingcatalog.domain.model.EventModel;
 import com.example.ticketingcatalog.domain.ports.in.EventUseCasePort;
 import com.example.ticketingcatalog.domain.service.IEventService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -15,41 +17,51 @@ import java.util.stream.Collectors;
 @Service
 public class EventUseCase implements EventUseCasePort {
 
+    private static final Logger log = LoggerFactory.getLogger(EventUseCase.class);
+
     @Autowired
     private IEventService eventDomainService;
 
     @Autowired
     private EventMapper eventMapper;
 
-    // Port methods using domain models
+    // ------------------- Port methods using domain models -------------------
     @Override
     public List<EventModel> getAllEvents() {
+        log.info("Obteniendo todos los eventos");
         return eventDomainService.getAll();
     }
 
     @Override
     public Optional<EventModel> getEventById(Long id) {
+        log.info("Obteniendo evento por id={}", id);
         return eventDomainService.getById(id);
     }
 
     @Override
     public EventModel createEvent(EventModel event) {
+        log.info("Creando evento nombre={} venueId={}", event.getName(),
+                event.getVenue() != null ? event.getVenue().getId() : null);
         return eventDomainService.create(event);
     }
 
     @Override
     public Optional<EventModel> updateEvent(Long id, EventModel event) {
+        log.info("Actualizando evento id={} nombre={}", id, event.getName());
         return eventDomainService.update(id, event);
     }
 
     @Override
     public boolean deleteEvent(Long id) {
+        log.warn("Eliminando evento id={}", id);
         return eventDomainService.delete(id);
     }
 
-    // Helper DTO methods used by REST adapter
+    // ------------------- Helper DTO methods used by REST adapter -------------------
     public List<EventDTO> getAll() {
-        return getAllEvents().stream().map(eventMapper::toDTOFromModel).collect(Collectors.toList());
+        return getAllEvents().stream()
+                .map(eventMapper::toDTOFromModel)
+                .collect(Collectors.toList());
     }
 
     public Optional<EventDTO> getByIdDTO(Long id) {
@@ -62,6 +74,7 @@ public class EventUseCase implements EventUseCasePort {
     }
 
     public Optional<EventDTO> updateDTO(Long id, EventDTO dto) {
-        return updateEvent(id, eventMapper.toModel(dto)).map(eventMapper::toDTOFromModel);
+        return updateEvent(id, eventMapper.toModel(dto))
+                .map(eventMapper::toDTOFromModel);
     }
 }

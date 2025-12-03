@@ -1,53 +1,100 @@
 package com.example.ticketingcatalog.infrastructure.exception;
 
-import org.springframework.http.HttpHeaders;
+import jakarta.servlet.http.HttpServletRequest;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
-import org.springframework.web.context.request.WebRequest;
-import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 
-import java.util.HashMap;
-import java.util.Map;
+import java.time.Instant;
+import java.util.UUID;
+import java.util.stream.Collectors;
 
 @ControllerAdvice
-public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
+public class GlobalExceptionHandler {
 
-    @Override
-    protected ResponseEntity<Object> handleMethodArgumentNotValid(
-            MethodArgumentNotValidException ex,
-            HttpHeaders headers,
-            HttpStatusCode status,
-            WebRequest request) {
+    private static final Logger log = LoggerFactory.getLogger(GlobalExceptionHandler.class);
 
-        Map<String, String> errors = new HashMap<>();
-        ex.getBindingResult().getFieldErrors()
-                .forEach(error -> errors.put(error.getField(), error.getDefaultMessage()));
+    private String generateTraceId() {
+        String traceId = UUID.randomUUID().toString();
+        return traceId;
+    }
 
-        return ResponseEntity.badRequest().body(errors);
+    private ResponseEntity<ErrorResponse> build(
+            Exception ex,
+            HttpStatus status,
+            HttpServletRequest request,
+            String title
+    ) {
+        String traceId = generateTraceId();
+
+        ErrorResponse error = new ErrorResponse(
+                "https://api.ticketing.com/errors/" + status.value(),
+                title,
+                status.value(),
+                ex.getMessage(),
+                request.getRequestURI(),
+                traceId,
+                Instant.now()
+        );
+
+        log.error("Error en request={} | status={} | traceId={}", request.getRequestURI(), status.value(), traceId, ex);
+
+        return ResponseEntity.status(status).body(error);
+    }
+
+    @ExceptionHandler(MethodArgumentNotValidException.class)
+    public ResponseEntity<ErrorResponse> handleValidation(MethodArgumentNotValidException ex,
+                                                          HttpServletRequest request) {
+        String traceId = generateTraceId();
+
+        String details = ex.getBindingResult()
+                .getFieldErrors()
+                .stream()
+                .map(err -> err.getField() + ": " + err.getDefaultMessage())
+                .collect(Collectors.joining(" | "));
+
+        ErrorResponse error = new ErrorResponse(
+                "https://api.ticketing.com/errors/400",
+                "Validation Error",
+                400,
+                details,
+                request.getRequestURI(),
+                traceId,
+                Instant.now()
+        );
+
+        log.warn("Validación fallida en request={} | traceId={} | detalles={}", request.getRequestURI(), traceId, details);
+
+        return ResponseEntity.badRequest().body(error);
     }
 
     @ExceptionHandler(NotFoundException.class)
-    public ResponseEntity<Map<String, String>> handleNotFound(NotFoundException ex) {
-        Map<String, String> error = new HashMap<>();
-        error.put("error", ex.getMessage());
-        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(error);
+    public ResponseEntity<ErrorResponse> handleNotFound(NotFoundException ex, HttpServletRequest request) {
+        return build(ex, HttpStatus.NOT_FOUND, request, "Resource Not Found");
     }
 
     @ExceptionHandler(DuplicateResourceException.class)
-    public ResponseEntity<Map<String, String>> handleDuplicate(DuplicateResourceException ex) {
-        Map<String, String> error = new HashMap<>();
-        error.put("error", ex.getMessage());
-        return ResponseEntity.status(HttpStatus.CONFLICT).body(error);
+    public ResponseEntity<ErrorResponse> handleDuplicate(DuplicateResourceException ex, HttpServletRequest request) {
+        return build(ex, HttpStatus.CONFLICT, request, "Duplicate Resource");
     }
 
     @ExceptionHandler(BadRequestException.class)
-    public ResponseEntity<Map<String, String>> handleBadRequest(BadRequestException ex) {
-        Map<String, String> error = new HashMap<>();
-        error.put("error", ex.getMessage());
-        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(error);
+    public ResponseEntity<ErrorResponse> handleBadRequest(BadRequestException ex, HttpServletRequest request) {
+        return build(ex, HttpStatus.BAD_REQUEST, request, "Bad Request");
+    }
+
+    @ExceptionHandler(DataIntegrityViolationException.class)
+    public ResponseEntity<ErrorResponse> handleIntegrity(DataIntegrityViolationException ex, HttpServletRequest request) {
+        return build(ex, HttpStatus.CONFLICT, request, "Data Integrity Violation");
+    }
+
+    @ExceptionHandler(Exception.class)
+    public ResponseEntity<ErrorResponse> handleGeneral(Exception ex, HttpServletRequest request) {
+        return build(ex, HttpStatus.INTERNAL_SERVER_ERROR, request, "Unexpected Server Error");
     }
 }
